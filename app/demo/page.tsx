@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { BrandMark, LogoUpload } from "@/components/BrandMark";
 import type { ChatTurn, Session } from "@/lib/types";
-import { sanitizeWebsite } from "@/lib/website";
+import { sanitizeWebsite, siteHost, slugify, unslug } from "@/lib/website";
 import { loadExtraListings } from "@/lib/listings-store";
 
 export default function DemoPage() {
@@ -26,8 +26,12 @@ export default function DemoPage() {
 
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
-    const site = sanitizeWebsite(q.get("site") || localStorage.getItem("pr_site") || "");
-    const name = q.get("name") || localStorage.getItem("pr_name") || "";
+    const parts = window.location.pathname.split("/").filter(Boolean);
+    const fromPath = parts[0] === "d" && parts[1] ? unslug(parts[1]) : "";
+    const site = sanitizeWebsite(
+      q.get("w") || q.get("site") || localStorage.getItem("pr_site") || "",
+    );
+    const name = fromPath || q.get("name") || localStorage.getItem("pr_name") || "";
     if (site) setWebsite(site);
     if (name) setAgency(name);
     setSession((s) => ({ ...s, websiteUrl: site, agencyName: name || undefined }));
@@ -54,11 +58,9 @@ export default function DemoPage() {
 
   function shareUrl() {
     if (typeof window === "undefined") return "/demo";
-    const u = new URL(window.location.origin + "/demo");
-    const clean = sanitizeWebsite(website);
-    if (clean) u.searchParams.set("site", clean);
-    if (agency.trim()) u.searchParams.set("name", agency.trim());
-    return u.toString();
+    const slug = slugify(agency || "inbox");
+    const host = siteHost(website);
+    return `${window.location.origin}/d/${slug}${host ? `?w=${host}` : ""}`;
   }
 
   async function copyShare() {
@@ -238,7 +240,7 @@ export default function DemoPage() {
             onClick={copyShare}
             className="mt-4 w-full rounded-full bg-ink py-2.5 text-sm text-sand"
           >
-            {copied ? "Link copied" : "Copy shareable demo link"}
+            {copied ? "Link copied" : "Copy clean share link"}
           </button>
           <p className="mt-3 break-all text-[11px] text-ink/40">{shareUrl()}</p>
           <ul className="mt-6 list-disc space-y-2 pl-4">
