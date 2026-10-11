@@ -25,7 +25,8 @@ export default function Home() {
             <p className="mt-4 text-sm text-ink/55">
               Send CEOs <span className="font-medium text-ink">/demo</span> — they paste their
               website, copy a private link, and clients browse that catalogue then chat what they
-              want.
+              want. Add a house on <span className="font-medium text-ink">/onboard</span> and the
+              inbox will match it.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -92,24 +93,31 @@ export default function Home() {
         </section>
 
         <section id="pricing" className="mx-auto max-w-6xl px-5 py-16">
-          <h2 className="font-serif text-3xl">Simple naira pricing</h2>
-          <p className="mt-2 text-ink/60">First month ₦10,000 to go live. Then pick a plan.</p>
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {[
-              ["Try", "₦10k", "First month", "1 WhatsApp line · 15 listings · rent or short-let"],
-              ["Solo", "₦25k", "/ month", "Rent + short-let · 40 listings · you are not in the chat"],
-              ["Agency", "₦55k", "/ month", "3 users · sale inspections · weekly report"],
-            ].map(([name, price, cadence, blurb]) => (
-              <div
-                key={name}
-                className="rounded-2xl border border-ink/10 bg-white p-6 shadow-sm"
-              >
-                <p className="text-xs uppercase tracking-wider text-moss">{name}</p>
-                <p className="mt-3 font-serif text-4xl">{price}</p>
-                <p className="text-sm text-ink/45">{cadence}</p>
-                <p className="mt-4 text-sm text-ink/70">{blurb}</p>
-              </div>
-            ))}
+          <h2 className="font-serif text-3xl">Start with 7 days free</h2>
+          <p className="mt-2 max-w-xl text-ink/60">
+            Full product for a week. Cancel before day 8 and you pay nothing. Then pick a plan.
+          </p>
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            <div className="rounded-2xl border border-ink/10 bg-white p-6 shadow-sm">
+              <p className="text-xs uppercase tracking-wider text-moss">Starter</p>
+              <p className="mt-3 font-serif text-4xl">₦10k</p>
+              <p className="text-sm text-ink/45">per month after trial</p>
+              <ul className="mt-4 space-y-2 text-sm text-ink/70">
+                <li>1 WhatsApp line</li>
+                <li>Rent or short-let · 15 listings</li>
+                <li>Inspection holds · no payment in chat</li>
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-moss/30 bg-cream p-6 shadow-sm">
+              <p className="text-xs uppercase tracking-wider text-moss">Pro</p>
+              <p className="mt-3 font-serif text-4xl">₦25k</p>
+              <p className="text-sm text-ink/45">per month after trial</p>
+              <ul className="mt-4 space-y-2 text-sm text-ink/70">
+                <li>1 WhatsApp line · you stay out of the chat</li>
+                <li>Rent, sale, and short-let · 40 listings</li>
+                <li>Inspection holds · weekly activity snapshot</li>
+              </ul>
+            </div>
           </div>
         </section>
       </main>

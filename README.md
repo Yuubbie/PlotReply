@@ -10,7 +10,9 @@ npm install
 npm run dev
 ```
 
-Open **http://127.0.0.1:3200** (not 3100, not https). On this Windows setup the production server on 3200 responds; `localhost:3100` can hang.
+Open **http://127.0.0.1:3200**. `npm run dev` now starts Next in development mode on that host/port.
+
+Onboarded listings persist in the browser and are matched in `/demo`. Cloud persistence still needs Supabase.
 
 - `/` landing
 - `/demo` talk to the bot (seed Lagos / Abuja / PH listings)
@@ -29,4 +31,18 @@ Until Meta is connected, ship the **demo inbox** — same bot logic.
 
 ## Stack
 
-Vercel + (next) Supabase. This v1 runs without Supabase so you can deploy today.
+Own GitHub repo + Vercel project (root = this folder). Not part of Hopayola.
+
+## Pricing (agents)
+
+7-day free trial, then **Starter ₦10,000 / month** or **Pro ₦25,000 / month**.
+
+## Deploy
+
+1. Create empty GitHub repo (e.g. `Yuubbie/plotreply`)
+2. `git remote add origin https://github.com/Yuubbie/plotreply.git && git push -u origin main`
+3. Vercel → Add New Project → that repo → Root Directory empty (this is the app root)
+
+Hobby Vercel is free. You are not billed for Hopayola by running PlotReply.
+
+Until Meta WhatsApp is connected you pay **₦0** to run the demo site.
