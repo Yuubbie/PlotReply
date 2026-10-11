@@ -21,6 +21,8 @@ export default function DemoPage() {
     },
   ]);
   const [pending, setPending] = useState(false);
+  const [listening, setListening] = useState(false);
+  const [voiceOn, setVoiceOn] = useState(true);
 
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
@@ -65,19 +67,27 @@ export default function DemoPage() {
     setTimeout(() => setCopied(false), 2000);
   }
 
-  async function send(e: React.FormEvent) {
-    e.preventDefault();
-    const text = input.trim();
-    if (!text || pending) return;
+  function speak(text: string) {
+    if (!voiceOn || typeof window === "undefined" || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "en-NG";
+    u.rate = 1;
+    window.speechSynthesis.speak(u);
+  }
+
+  async function sendText(text: string) {
+    const trimmed = text.trim();
+    if (!trimmed || pending) return;
     setInput("");
-    setTurns((t) => [...t, { role: "user", text }]);
+    setTurns((t) => [...t, { role: "user", text: trimmed }]);
     setPending(true);
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          text,
+          text: trimmed,
           listings: loadExtraListings(),
           session: {
             ...session,
@@ -89,13 +99,52 @@ export default function DemoPage() {
       const data = await res.json();
       setSession(data.session);
       setTurns((t) => [...t, { role: "bot", text: data.text }]);
+      speak(data.text);
     } catch {
-      setTurns((t) => [
-        ...t,
-        { role: "bot", text: "Inbox is offline. Try again in a moment." },
-      ]);
+      const fail = "Inbox is offline. Try again in a moment.";
+      setTurns((t) => [...t, { role: "bot", text: fail }]);
     }
     setPending(false);
+  }
+
+  function listen() {
+    type Rec = {
+      lang: string;
+      interimResults: boolean;
+      start: () => void;
+      onstart: (() => void) | null;
+      onend: (() => void) | null;
+      onerror: (() => void) | null;
+      onresult: ((ev: { results: { 0?: { 0?: { transcript?: string } } } }) => void) | null;
+    };
+    const W = window as unknown as {
+      SpeechRecognition?: new () => Rec;
+      webkitSpeechRecognition?: new () => Rec;
+    };
+    const SR = W.SpeechRecognition || W.webkitSpeechRecognition;
+    if (!SR) {
+      setTurns((t) => [
+        ...t,
+        { role: "bot", text: "Voice works in Chrome or Edge. Allow the microphone, then tap Speak." },
+      ]);
+      return;
+    }
+    const rec = new SR();
+    rec.lang = "en-NG";
+    rec.interimResults = false;
+    rec.onstart = () => setListening(true);
+    rec.onend = () => setListening(false);
+    rec.onerror = () => setListening(false);
+    rec.onresult = (ev) => {
+      const said = ev.results[0]?.[0]?.transcript || "";
+      if (said) void sendText(said);
+    };
+    rec.start();
+  }
+
+  async function send(e: React.FormEvent) {
+    e.preventDefault();
+    await sendText(input);
   }
 
   return (
@@ -127,13 +176,23 @@ export default function DemoPage() {
                 </div>
               ))}
             </div>
-            <form onSubmit={send} className="flex gap-2 bg-[#f0f2f5] p-3">
+            <form onSubmit={send} className="flex flex-wrap gap-2 bg-[#f0f2f5] p-3">
               <input
-                className="flex-1 rounded-full border-0 px-4 py-2.5 text-sm outline-none"
-                placeholder="2-bed Lekki rent 4m"
+                className="min-w-[8rem] flex-1 rounded-full border-0 px-4 py-2.5 text-sm outline-none"
+                placeholder="2-bed Lekki rent 4m — or tap Speak"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
               />
+              <button
+                type="button"
+                onClick={listen}
+                disabled={pending}
+                className={`rounded-full px-4 text-sm disabled:opacity-50 ${
+                  listening ? "bg-gold text-ink" : "bg-white text-ink"
+                }`}
+              >
+                {listening ? "Listening…" : "Speak"}
+              </button>
               <button
                 className="rounded-full bg-moss px-4 text-sm text-white disabled:opacity-50"
                 disabled={pending}
@@ -146,9 +205,13 @@ export default function DemoPage() {
         <aside className="text-sm text-ink/70">
           <h1 className="font-serif text-2xl text-ink">Your brand on WhatsApp</h1>
           <p className="mt-2">
-            Type the agency name. The chat header and hello become that name. Paste their listings
-            site so clients browse their catalogue, then come back here with area and budget.
+            Type the agency name. The chat header and hello become that name. Clients type or tap
+            Speak — the desk answers out loud as you.
           </p>
+          <label className="mt-3 flex items-center gap-2 text-sm">
+            <input type="checkbox" checked={voiceOn} onChange={(e) => setVoiceOn(e.target.checked)} />
+            Speak replies out loud
+          </label>
           <div className="mt-5">
             <LogoUpload onChange={setLogo} />
           </div>

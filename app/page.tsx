@@ -14,14 +14,15 @@ export default function Home() {
               <Mark className="h-4 w-4" /> Nigeria · rent · sale · short-let
             </p>
             <h1 className="font-serif text-4xl font-medium leading-[1.15] md:text-5xl">
-              You are losing houses in WhatsApp.
-              <span className="block text-moss">Every unread “how much?” is money walking.</span>
+              Agents: the house is still on your list.
+              <span className="block text-moss">The paying client already left the chat.</span>
             </h1>
             <p className="mt-5 max-w-lg text-lg leading-relaxed text-ink/70">
-              At 11pm a CEO texts. You are asleep. By morning they rented from the agent who
-              answered in 8 seconds. You still drove to Ajah yesterday for a ₦800k budget. You
-              sent an account number and looked like a 419. That is the job right now — until
-              the desk answers as <span className="font-medium text-ink">your brand</span>.
+              This is not about land vanishing. It is about <span className="font-medium text-ink">you</span> —
+              the agent or host — losing the person who had budget, because another desk answered
+              “how much?” at 11pm in their own brand. If you already live in WhatsApp: this is for
+              the hours you sleep, drive, or inspect. The desk talks as your agency, in chat or
+              voice. It never asks for transfer.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -148,6 +149,7 @@ export default function Home() {
               ["Never-pay shield", "Any “transfer / POS / account” is refused. You look like a proper agency, not a hustle."],
               ["Inspection hold + ID reminder", "Slot is locked. Landmark ping 2 hours before. You stop chasing."],
               ["Always on at 2am", "The CEO who texts after owambe gets a listing, not a blue tick."],
+              ["Voice desk", "They can speak. The same bot answers out loud as your agency. Same never-pay rules."],
               ["Your catalogue, not invented prices", "They click your website, paste a link, or match live stock you approved."],
               ["Pro weekly report", "Monday: chats, inspections held, which houses got heat. Restock what sells."],
             ].map(([t, d]) => (
@@ -186,7 +188,7 @@ export default function Home() {
               <ul className="mt-4 space-y-2 text-sm text-ink/70">
                 <li>Your logo + name on 1 WhatsApp line</li>
                 <li>Rent or short-let · 15 listings</li>
-                <li>Inspection holds · never-pay shield</li>
+                <li>Inspection holds · never-pay shield · voice on the demo desk</li>
               </ul>
             </div>
             <div className="rounded-2xl border border-moss/30 bg-cream p-6 shadow-sm">

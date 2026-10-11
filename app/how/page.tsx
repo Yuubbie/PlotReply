@@ -21,7 +21,7 @@ const steps = [
   {
     n: "4",
     t: "Share your WhatsApp / demo link",
-    d: "Put it on Instagram, your site, and status. Every “how much?” lands here.",
+    d: "Put it on Instagram, your site, and status. They can type or speak. Every “how much?” lands here.",
   },
   {
     n: "5",
