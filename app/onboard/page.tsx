@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 import { saveListing } from "@/lib/listings-store";
@@ -9,6 +9,12 @@ import type { Intent } from "@/lib/types";
 
 export default function OnboardPage() {
   const [done, setDone] = useState(false);
+  const [trial, setTrial] = useState(false);
+
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    setTrial(q.get("trial") === "1");
+  }, []);
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -51,8 +57,12 @@ export default function OnboardPage() {
           </div>
         ) : (
           <>
-            <h1 className="font-serif text-3xl">Go live</h1>
-            <p className="mt-2 text-sm text-ink/55">Self-serve. You add the house. English nationwide.</p>
+            <h1 className="font-serif text-3xl">{trial ? "Start your 7-day free trial" : "Go live"}</h1>
+            <p className="mt-2 text-sm text-ink/55">
+              {trial
+                ? "No charge until day 8. Clients will see your agency name — not PlotReply."
+                : "Self-serve. Your name on WhatsApp. You add the house."}
+            </p>
             <form onSubmit={submit} className="mt-8 space-y-4 rounded-2xl border border-ink/8 bg-cream p-6">
               {[
                 ["agency", "Agency name", "text", "Horizon Homes"],

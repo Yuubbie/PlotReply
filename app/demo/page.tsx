@@ -28,6 +28,14 @@ export default function DemoPage() {
     if (site) setWebsite(site);
     if (name) setAgency(name);
     setSession((s) => ({ ...s, websiteUrl: site, agencyName: name || undefined }));
+    if (name) {
+      setTurns([
+        {
+          role: "bot",
+          text: `Hello — this is ${name}. Rent, buy, or short-let? Send city and budget.`,
+        },
+      ]);
+    }
   }, []);
 
   function persistSite(next: string, name: string) {
@@ -134,10 +142,10 @@ export default function DemoPage() {
           </div>
         </div>
         <aside className="text-sm text-ink/70">
-          <h1 className="font-serif text-2xl text-ink">CEO demo pack</h1>
+          <h1 className="font-serif text-2xl text-ink">Your brand on WhatsApp</h1>
           <p className="mt-2">
-            Paste their public listings URL. Clients browse that site, then tell PlotReply what they
-            want — or paste the listing link here.
+            Type the agency name. The chat header and hello become that name. Paste their listings
+            site so clients browse their catalogue, then come back here with area and budget.
           </p>
           <label className="mt-5 block text-xs font-medium uppercase tracking-wide text-ink/45">
             Agency name

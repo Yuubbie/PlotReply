@@ -32,6 +32,26 @@ export default function DashboardPage() {
             Add listing
           </Link>
         </div>
+        <div className="mt-8 rounded-2xl border border-moss/25 bg-cream p-5">
+          <p className="text-xs uppercase tracking-wider text-moss">Weekly report · Pro</p>
+          <p className="mt-1 text-sm text-ink/55">
+            Mondays on Pro: chats, inspections held, listings that got interest. Sample this week:
+          </p>
+          <dl className="mt-4 grid grid-cols-3 gap-3 text-center">
+            <div>
+              <dt className="text-xs text-ink/45">Chats</dt>
+              <dd className="font-serif text-2xl">42</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-ink/45">Inspections held</dt>
+              <dd className="font-serif text-2xl">11</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-ink/45">Hot listings</dt>
+              <dd className="font-serif text-2xl">6</dd>
+            </div>
+          </dl>
+        </div>
         <ul className="mt-8 grid gap-3">
           {listings.map((l) => (
             <li

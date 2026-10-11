@@ -119,11 +119,13 @@ export function reply(userText: string, session: Session): { text: string; sessi
     };
   }
 
+  const brand = (next.agencyName || "").trim() || "the agency";
+
   if (/(hi|hello|hey|good morning|good evening)/.test(t) && t.length < 24) {
     return {
       session: next,
       text:
-        "Hello — this is PlotReply for the agent.\nRent, buy, or short-let? Send city/area and budget (e.g. “2-bed Lekki rent 4m” or “VI weekend 2 nights”)." +
+        `Hello — this is ${brand}.\nRent, buy, or short-let? Send city/area and budget (e.g. “2-bed Lekki rent 4m” or “VI weekend 2 nights”).` +
         websiteLine(site),
     };
   }

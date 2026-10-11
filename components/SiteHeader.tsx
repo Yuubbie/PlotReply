@@ -14,10 +14,10 @@ export function SiteHeader() {
             Dashboard
           </Link>
           <Link
-            href="/onboard"
-            className="ml-1 rounded-full bg-ink px-4 py-2 text-sand hover:bg-moss"
+            href="/onboard?trial=1"
+            className="ml-1 rounded-full bg-moss px-4 py-2 text-sm font-medium text-white hover:bg-ink"
           >
-            Go live
+            Start 7-day free trial
           </Link>
         </nav>
       </div>
