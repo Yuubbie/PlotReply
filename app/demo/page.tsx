@@ -242,9 +242,14 @@ export default function DemoPage() {
           </button>
           <p className="mt-3 break-all text-[11px] text-ink/40">{shareUrl()}</p>
           <ul className="mt-6 list-disc space-y-2 pl-4">
+            <li>plot Ibeju 25m</li>
+            <li>buy house GRA Ikeja</li>
             <li>2 bedroom Lekki rent 4m</li>
+            <li>lease office VI</li>
             <li>short-let VI 2 nights</li>
-            <li>website</li>
+            <li>Ikeja hall Saturday</li>
+            <li>complete duplex Ajah</li>
+            <li>consultation Lagos</li>
             <li>send money to hold it</li>
           </ul>
         </aside>

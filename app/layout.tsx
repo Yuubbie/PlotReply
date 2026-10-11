@@ -15,9 +15,9 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "PlotReply — WhatsApp that books the inspection",
+  title: "PlotReply — WhatsApp desk for land, houses, halls, and more",
   description:
-    "Nigeria rent, sale, and short-let inbox. Answers every how much? You only meet serious people.",
+    "Nigeria: buy land, buy or rent or lease houses, short-lets, event halls, build/complete, consultation. Your brand. Never takes payment in chat.",
   icons: { icon: "/icon.svg" },
 };
 

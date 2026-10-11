@@ -16,7 +16,7 @@ const steps = [
   {
     n: "3",
     t: "Add houses (or paste your catalogue URL)",
-    d: "Prices come only from what you approve. The desk does not invent fees.",
+    d: "Land, houses (buy / rent / lease), short-lets, halls, build/complete, consultation. Prices only from what you approve.",
   },
   {
     n: "4",

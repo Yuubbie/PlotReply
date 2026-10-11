@@ -5,7 +5,7 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SEED_LISTINGS } from "@/lib/seed";
 import { loadExtraListings } from "@/lib/listings-store";
-import type { Listing } from "@/lib/types";
+import { INTENT_LABELS, type Listing } from "@/lib/types";
 
 const naira = (n: number) => "₦" + n.toLocaleString("en-NG");
 
@@ -63,7 +63,7 @@ export default function DashboardPage() {
                 <p className="text-sm text-ink/50">
                   {l.area}, {l.city}
                   <span className="ml-2 rounded-full bg-moss/10 px-2 py-0.5 text-xs capitalize text-moss">
-                    {l.intent}
+                    {INTENT_LABELS[l.intent] || l.intent}
                   </span>
                 </p>
               </div>

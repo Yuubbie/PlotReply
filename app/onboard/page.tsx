@@ -5,7 +5,7 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 import { saveListing } from "@/lib/listings-store";
 import { sanitizeWebsite } from "@/lib/website";
-import type { Intent } from "@/lib/types";
+import { INTENT_LABELS, INTENTS, type Intent } from "@/lib/types";
 import { LogoUpload } from "@/components/BrandMark";
 
 export default function OnboardPage() {
@@ -90,19 +90,21 @@ export default function OnboardPage() {
                   name="intent"
                   className="mt-1 w-full rounded-xl border border-ink/10 bg-white px-3 py-2.5 text-sm font-normal"
                 >
-                  <option value="rent">Rent (yearly)</option>
-                  <option value="shortlet">Short-let</option>
-                  <option value="sale">Sale</option>
+                  {INTENTS.map((id) => (
+                    <option key={id} value={id}>
+                      {INTENT_LABELS[id]}
+                    </option>
+                  ))}
                 </select>
               </label>
               <label className="block text-sm font-medium">
-                Beds
+                Beds (0 if land, hall, or consult)
                 <input
                   required
                   type="number"
-                  min={1}
+                  min={0}
                   name="beds"
-                  defaultValue={2}
+                  defaultValue={0}
                   className="mt-1 w-full rounded-xl border border-ink/10 bg-white px-3 py-2.5 text-sm font-normal"
                 />
               </label>

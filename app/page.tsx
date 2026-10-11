@@ -11,7 +11,7 @@ export default function Home() {
         <section className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-16 md:grid-cols-2 md:py-20">
           <div>
             <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-white/60 px-3 py-1 text-xs font-medium tracking-wide text-moss">
-              <Mark className="h-4 w-4" /> Nigeria · rent · sale · short-let
+              <Mark className="h-4 w-4" /> Land · houses · halls · build · consult
             </p>
             <h1 className="font-serif text-4xl font-medium leading-[1.15] md:text-5xl">
               Agents: the house is still on your list.
@@ -72,6 +72,28 @@ export default function Home() {
                 wakes for this slot.
               </div>
             </div>
+          </div>
+        </section>
+
+        <section className="border-t border-ink/8 px-5 py-8">
+          <div className="mx-auto flex max-w-6xl flex-wrap gap-2">
+            {[
+              "Buy land",
+              "Buy a house",
+              "Rent",
+              "Lease",
+              "Short-let",
+              "Event halls",
+              "Build / complete",
+              "Consultation",
+            ].map((s) => (
+              <span
+                key={s}
+                className="rounded-full border border-ink/10 bg-white px-3 py-1.5 text-xs font-medium text-ink/70"
+              >
+                {s}
+              </span>
+            ))}
           </div>
         </section>
 
@@ -187,7 +209,7 @@ export default function Home() {
               <p className="text-sm text-ink/45">per month after trial</p>
               <ul className="mt-4 space-y-2 text-sm text-ink/70">
                 <li>Your logo + name on 1 WhatsApp line</li>
-                <li>Rent or short-let · 15 listings</li>
+                <li>Full desk: land, buy, rent, lease, short-let, halls, build, consult · 15 listings</li>
                 <li>Inspection holds · never-pay shield · voice on the demo desk</li>
               </ul>
             </div>
@@ -197,7 +219,7 @@ export default function Home() {
               <p className="text-sm text-ink/45">per month after trial</p>
               <ul className="mt-4 space-y-2 text-sm text-ink/70">
                 <li>Your logo · you stay out of the chat</li>
-                <li>Rent, sale, and short-let · 40 listings</li>
+                <li>All services · 40 listings</li>
                 <li>Inspection holds + never-pay shield</li>
                 <li>
                   <span className="font-medium text-ink">Weekly report</span> — chats, inspections

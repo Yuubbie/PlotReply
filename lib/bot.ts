@@ -1,5 +1,6 @@
 import { SEED_LISTINGS } from "./seed";
 import type { Intent, Listing, Session } from "./types";
+import { INTENT_LABELS } from "./types";
 import { websiteLine } from "./website";
 
 const naira = (n: number) => "₦" + n.toLocaleString("en-NG");
@@ -7,8 +8,14 @@ const naira = (n: number) => "₦" + n.toLocaleString("en-NG");
 function detectIntent(text: string): Intent | undefined {
   const t = text.toLowerCase();
   if (/(short.?let|airbnb|weekend|per night|nights?)/.test(t)) return "shortlet";
-  if (/(buy|sale|selling|outright|title|c of o)/.test(t)) return "sale";
-  if (/(rent|yearly|per annum|let|tenant)/.test(t)) return "rent";
+  if (/(hall|event centre|event center|reception|wedding venue|banquet)/.test(t)) return "hall";
+  if (/(consult|advice|valuation|what should i|realtor advice)/.test(t)) return "consult";
+  if (/(build|complete(d)? house|finishing|carcass|contractor|boq)/.test(t)) return "build";
+  if (/(plot|land|acre|hectares?|gazette)/.test(t)) return "land";
+  if (/(lease|commercial space|office floor)/.test(t)) return "lease";
+  if (/(buy house|buy a house|duplex for sale|outright|selling house)/.test(t)) return "sale";
+  if (/(buy|sale|selling|title|c of o)/.test(t)) return "sale";
+  if (/(rent|yearly|per annum|tenant)/.test(t)) return "rent";
   return undefined;
 }
 
@@ -59,16 +66,24 @@ function matchListings(s: Session): Listing[] {
     .filter((l) => {
       if (s.intent && l.intent !== s.intent) return false;
       if (s.city && l.city.toLowerCase() !== s.city.toLowerCase()) return false;
-      if (s.beds && l.beds !== s.beds) return false;
-      if (s.budget && l.intent !== "shortlet" && l.priceNgn > s.budget * 1.15) return false;
+      if (s.beds && l.beds > 0 && l.beds !== s.beds) return false;
+      if (s.budget && l.intent !== "shortlet" && l.intent !== "hall" && l.priceNgn > s.budget * 1.15)
+        return false;
       return true;
     })
     .slice(0, 3);
 }
 
 function card(l: Listing) {
-  const unit = l.intent === "shortlet" ? "/night" : l.intent === "rent" ? "/year" : "";
-  return `• ${l.title} — ${l.area}, ${l.city}\n  ${naira(l.priceNgn)}${unit}\n  ${l.notes}`;
+  const unit =
+    l.intent === "shortlet"
+      ? "/night"
+      : l.intent === "rent" || l.intent === "lease"
+        ? "/year"
+        : l.intent === "hall"
+          ? "/event day"
+          : "";
+  return `• ${INTENT_LABELS[l.intent]} · ${l.title} — ${l.area}, ${l.city}\n  ${naira(l.priceNgn)}${unit}\n  ${l.notes}`;
 }
 
 export function reply(userText: string, session: Session): { text: string; session: Session } {
@@ -92,7 +107,7 @@ export function reply(userText: string, session: Session): { text: string; sessi
     return {
       session: next,
       text:
-        "Got the listing link. Tell me: rent, buy, or short-let — plus your budget and when you can inspect (or stay dates)." +
+        "Got the listing link. Tell me what you want: land, buy a house, rent, lease, short-let, event hall, build/complete, or consultation — plus budget and when you can inspect." +
         websiteLine(site),
     };
   }
@@ -107,15 +122,15 @@ export function reply(userText: string, session: Session): { text: string; sessi
   const slot = detectSlot(userText);
   if (slot && next.intent && next.city) {
     next.inspectionHeld = slot;
-    if (next.intent === "shortlet") {
+    if (next.intent === "shortlet" || next.intent === "hall") {
       return {
         session: next,
-        text: `${slot} noted for the host. Guest count if you have it. No payment in this chat — they confirm the hold.`,
+        text: `${slot} noted. Guest/event count if you have it. No payment in this chat — they confirm the hold.`,
       };
     }
     return {
       session: next,
-      text: `${slot} held for inspection. Landmark + ID reminder goes out 2 hours before. The agent only wakes for this slot. Do not pay in this chat.`,
+      text: `${slot} held for inspection or site visit. Landmark + ID reminder goes out 2 hours before. The agent only wakes for this slot. Do not pay in this chat.`,
     };
   }
 
@@ -125,7 +140,7 @@ export function reply(userText: string, session: Session): { text: string; sessi
     return {
       session: next,
       text:
-        `Hello — this is ${brand}.\nRent, buy, or short-let? Send city/area and budget (e.g. “2-bed Lekki rent 4m” or “VI weekend 2 nights”).` +
+        `Hello — this is ${brand}.\nLand, buy a house, rent, lease, short-let, event hall, build/complete, or consultation?\nSend city/area and budget (e.g. “plot Ibeju 25m”, “2-bed Lekki rent 4m”, “Ikeja hall Saturday”).` +
         websiteLine(site),
     };
   }
@@ -133,7 +148,7 @@ export function reply(userText: string, session: Session): { text: string; sessi
   if (!next.intent) {
     return {
       session: next,
-      text: "Are you looking to rent (yearly), buy, or book a short-let?",
+      text: "What do you need: buy land, buy a house, rent, lease, short-let, event hall, build/complete a house, or consultation?",
     };
   }
 
@@ -149,15 +164,17 @@ export function reply(userText: string, session: Session): { text: string; sessi
     return {
       session: next,
       text:
-        `No live match for ${next.intent} in ${next.city} yet. I can take your request and the agent will hunt. Send beds + budget + when you want to move (or dates for short-let).` +
+        `No live match for ${INTENT_LABELS[next.intent]} in ${next.city} yet. I can take your request and the agent will hunt. Send budget + when you can visit.` +
         websiteLine(site),
     };
   }
 
   const book =
-    next.intent === "shortlet"
-      ? "\n\nTo hold dates, send nights + guest count. The host confirms. No payment in this chat."
-      : "\n\nTo book an inspection, send a day (e.g. Saturday 1pm). Bring ID. No payment before you see the house.";
+    next.intent === "shortlet" || next.intent === "hall"
+      ? "\n\nTo hold a date, send the day + guest count. They confirm. No payment in this chat."
+      : next.intent === "consult"
+        ? "\n\nTo book the consultation, send a day (e.g. Thursday 11am). No payment in this chat."
+        : "\n\nTo book an inspection or site visit, send a day (e.g. Saturday 1pm). Bring ID. No payment in this chat.";
 
   return {
     session: next,
