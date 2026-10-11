@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
-import { Mark } from "@/components/Logo";
+import { BrandMark, LogoUpload } from "@/components/BrandMark";
 import type { ChatTurn, Session } from "@/lib/types";
 import { sanitizeWebsite } from "@/lib/website";
 import { loadExtraListings } from "@/lib/listings-store";
@@ -12,6 +12,7 @@ export default function DemoPage() {
   const [website, setWebsite] = useState("");
   const [agency, setAgency] = useState("");
   const [copied, setCopied] = useState(false);
+  const [logo, setLogo] = useState("");
   const [session, setSession] = useState<Session>({});
   const [turns, setTurns] = useState<ChatTurn[]>([
     {
@@ -36,6 +37,7 @@ export default function DemoPage() {
         },
       ]);
     }
+    setLogo(localStorage.getItem("pr_logo") || "");
   }, []);
 
   function persistSite(next: string, name: string) {
@@ -102,7 +104,7 @@ export default function DemoPage() {
       <main className="mx-auto grid max-w-5xl gap-10 px-5 py-10 md:grid-cols-[1fr_20rem]">
         <div className="overflow-hidden rounded-[28px] border border-ink/10 bg-ink shadow-xl">
           <div className="flex items-center gap-3 px-4 py-3 text-sand">
-            <Mark className="h-9 w-9" />
+            <BrandMark className="h-9 w-9" src={logo} />
             <div>
               <p className="text-sm font-medium">{agency || "PlotReply demo"}</p>
               <p className="text-[11px] text-sand/50">
@@ -147,6 +149,9 @@ export default function DemoPage() {
             Type the agency name. The chat header and hello become that name. Paste their listings
             site so clients browse their catalogue, then come back here with area and budget.
           </p>
+          <div className="mt-5">
+            <LogoUpload onChange={setLogo} />
+          </div>
           <label className="mt-5 block text-xs font-medium uppercase tracking-wide text-ink/45">
             Agency name
             <input

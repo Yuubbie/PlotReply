@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { saveListing } from "@/lib/listings-store";
 import { sanitizeWebsite } from "@/lib/website";
 import type { Intent } from "@/lib/types";
+import { LogoUpload } from "@/components/BrandMark";
 
 export default function OnboardPage() {
   const [done, setDone] = useState(false);
@@ -64,6 +65,7 @@ export default function OnboardPage() {
                 : "Self-serve. Your name on WhatsApp. You add the house."}
             </p>
             <form onSubmit={submit} className="mt-8 space-y-4 rounded-2xl border border-ink/8 bg-cream p-6">
+              <LogoUpload />
               {[
                 ["agency", "Agency name", "text", "Horizon Homes"],
                 ["website", "Listings website (for clients)", "url", "https://"],

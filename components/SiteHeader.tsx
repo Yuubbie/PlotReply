@@ -7,6 +7,9 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
         <Logo />
         <nav className="flex items-center gap-1 text-sm">
+          <Link href="/how" className="rounded-full px-3 py-1.5 text-ink/70 hover:bg-white/70">
+            How it works
+          </Link>
           <Link href="/demo" className="rounded-full px-3 py-1.5 text-ink/70 hover:bg-white/70">
             Demo
           </Link>
